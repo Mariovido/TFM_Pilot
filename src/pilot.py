@@ -1,56 +1,62 @@
-import keras
-from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+import tensorflow as tf
 
-# the data, split between train and test sets
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+import neptune
+from neptune.integrations.tensorflow_keras import NeptuneCallback
 
-print(x_train.shape, y_train.shape)
+import os
+from dotenv import load_dotenv
 
-x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-input_shape = (28, 28, 1)
+# Initialization
+load_dotenv()
 
-# create the model
-batch_size = 128
-num_classes = 25
+PROJECT_NEPTUNE_PILOT = os.getenv('PROJECT_NEPTUNE_PILOT')
+API_TOKEN_NEPTUNE_PILOT = os.getenv('API_TOKEN_NEPTUNE_PILOT')
+
+run = neptune.init_run(
+    project=PROJECT_NEPTUNE_PILOT,
+    api_token=API_TOKEN_NEPTUNE_PILOT
+)
+
+# Parameters
+learning_rate = 0.005
+momentum = 0.4
 epochs = 10
+batch_size = 64
 
-model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
-          activation='relu', input_shape=input_shape))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
+# Add parameters to the run
+params = {"lr": learning_rate, "momentum": momentum,
+          "epochs": epochs, "batch_size": batch_size}
+run["parameters"] = params
 
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(), metrics=['accuracy'])
+# Dataset initialization
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
 
-# convert class vectors to binary class matrices
-y_train = keras.utils.to_categorical(y_train, num_classes)
-y_test = keras.utils.to_categorical(y_test, num_classes)
+# Model creation
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation=tf.keras.activations.relu),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(10, activation=tf.keras.activations.softmax)
+])
 
-x_train = x_train.astype('float32')
-x_test = x_test.astype('float32')
-x_train /= 255
-x_test /= 255
-print('x_train shape:', x_train.shape)
-print('x_test shape:', x_test.shape)
+optimizer = tf.keras.optimizers.SGD(
+    learning_rate=params['lr'], momentum=params["momentum"])
 
-# train model
-hist = model.fit(x_train, y_train, batch_size=batch_size,
-                 epochs=epochs, verbose=1, validation_data=(x_test, y_test))
-print('The model has successfully trained')
+model.compile(optimizer=optimizer,
+              loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-model.save('./mnist.h5')
-print('Saving the model as mnist.h5')
+# Neptune callback initialization
+neptune_cbk = NeptuneCallback(run=run, base_namespace='training')
 
-score = model.evaluate(x_test, y_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+# Model training
+model.fit(x_train, y_train, epochs=params['epochs'],
+          batch_size=params['batch_size'], callbacks=neptune_cbk)
+
+# Model evaluation
+eval_metrics = model.evaluate(x_test, y_test, verbose=0)
+for j, metric in enumerate(eval_metrics):
+    run['eval/{}'.format(model.metrics_names[j])] = metric
+
+# End
+run.stop()

@@ -36,6 +36,8 @@ This repository will be the repository containing code of the pilot for the Thes
 The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
+- [TensorFlow](https://www.tensorflow.org/)
+- [Neptune.ai](https://neptune.ai/)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
@@ -93,7 +95,7 @@ _To start using the app you need to run the following steps:_
    deactivate
    ```
 
-A file called `mnist.h5` will be created on the root folder.
+The execution is saved on the neptune web page and can be accessed with this [link](https://app.neptune.ai/mariotfm2023/-/projects). 
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
