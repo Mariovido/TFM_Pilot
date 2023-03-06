@@ -36,6 +36,8 @@ This repository will be the repository containing code of the pilot for the Thes
 The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
+- [TensorFlow](https://www.tensorflow.org/)
+- [Weights & Biases](https://wandb.ai/)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
@@ -84,16 +86,20 @@ _The steps to get working the project are the following ones:_
 _To start using the app you need to run the following steps:_
 
 1. Open a terminal on the root folder
-2. Run the following command
+2. Login into the Weights & Biases introducing the `API_KEY_WANDB_PILOT`
+   ```
+   wandb login
+   ```
+3. Run the following command
    ```sh
    env\Scripts\python.exe src\pilot.py
    ```
-3. (Optional) if you want to deactivate your environment run the following one
+4. (Optional) if you want to deactivate your environment run the following one
    ```sh
    deactivate
    ```
 
-A file called `mnist.h5` will be created on the root folder.
+The execution is saved on the weights & biases web page and can be accessed with this [link](https://wandb.ai/tfm2023/projects).
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 

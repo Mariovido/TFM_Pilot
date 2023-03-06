@@ -1,62 +1,56 @@
-import keras
-from keras.datasets import mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+import wandb
+from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
+
+import random
+import numpy as np
+import tensorflow as tf
 
 import os
 from dotenv import load_dotenv
 
 # Initialization
 load_dotenv()
+PROJECT_WANDB_PILOT = os.getenv('PROJECT_WANDB_PILOT')
 
-# the data, split between train and test sets
+wandb.init(project=PROJECT_WANDB_PILOT, config={
+    'layer_1': 512,
+    'activation_1': 'relu',
+    'dropout': random.uniform(0.01, 0.80),
+    'layer_2': 10,
+    'activation_2': 'softmax',
+    'optimizer': 'sgd',
+    'loss': 'sparse_categorical_crossentropy',
+    'metric': 'accuracy',
+    "epoch": 8,
+    'batch_size': 256
+})
+
+# Use wandb.config as config
+config = wandb.config
+
+# Dataset initialization
+mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+x_train, y_train = x_train[::5], y_train[::5]
+x_test, y_test = x_test[::20], y_test[::20]
+labels = [str(digit) for digit in range(np.max(y_train) + 1)]
 
-print(x_train.shape, y_train.shape)
+# Model creation
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Flatten(input_shape=(28, 28)),
+    tf.keras.layers.Dense(config.layer_1, activation=config.activation_1),
+    tf.keras.layers.Dropout(config.dropout),
+    tf.keras.layers.Dense(config.layer_2, activation=config.activation_2)
+])
 
-x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-input_shape = (28, 28, 1)
+# Model compile
+model.compile(optimizer=config.optimizer,
+              loss=config.loss, metrics=[config.metric])
 
-# create the model
-batch_size = 128
-num_classes = 25
-epochs = 10
+# Model training
+model.fit(x=x_train, y=y_train, epochs=config.epoch,
+          batch_size=config.batch_size, validation_data=(x_test, y_test), callbacks=[WandbMetricsLogger(log_freq=5), WandbModelCheckpoint("models")])
 
-model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
-          activation='relu', input_shape=input_shape))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
-
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(), metrics=['accuracy'])
-
-# convert class vectors to binary class matrices
-y_train = keras.utils.to_categorical(y_train, num_classes)
-y_test = keras.utils.to_categorical(y_test, num_classes)
-
-x_train = x_train.astype('float32')
-x_test = x_test.astype('float32')
-x_train /= 255
-x_test /= 255
-print('x_train shape:', x_train.shape)
-print('x_test shape:', x_test.shape)
-
-# train model
-hist = model.fit(x_train, y_train, batch_size=batch_size,
-                 epochs=epochs, verbose=1, validation_data=(x_test, y_test))
-print('The model has successfully trained')
-
-model.save('./mnist.h5')
-print('Saving the model as mnist.h5')
-
-score = model.evaluate(x_test, y_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+# End
+wandb.finish()
