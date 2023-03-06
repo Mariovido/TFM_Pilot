@@ -133,3 +133,6 @@ logs
 
 # Generated files
 *.h5
+
+# Tools directories
+.neptune/
