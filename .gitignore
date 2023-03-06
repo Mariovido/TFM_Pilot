@@ -136,3 +136,5 @@ logs
 
 # Tools directories
 .neptune/
+wandb/
+models/
