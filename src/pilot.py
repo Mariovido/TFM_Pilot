@@ -15,15 +15,17 @@ PROJECT_WANDB_PILOT = os.getenv('PROJECT_WANDB_PILOT')
 
 wandb.init(project=PROJECT_WANDB_PILOT, config={
     'layer_1': Config.layer_1,
-    'activation_1': Config.activation_1,
+    'activation_1': Config.activation_1.__name__,
     'dropout': Config.dropout,
     'layer_2': Config.layer_2,
-    'activation_2': Config.activation_2,
-    'optimizer': Config.optimizer,
-    'loss': Config.loss_function,
+    'activation_2': Config.activation_2.__name__,
+    'loss': Config.loss_function.__name__,
     'metric': Config.metric,
     "epoch": Config.epochs,
-    'batch_size': Config.batch_size
+    'batch_size': Config.batch_size,
+    'input_shape': Config.input_shape,
+    'learning_rate': Config.learning_rate,
+    'momentum': Config.momentum
 })
 
 # Use wandb.config as config
@@ -39,16 +41,18 @@ labels = [str(digit) for digit in range(np.max(y_train) + 1)]
 
 # Model creation
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)), # Modify
+    tf.keras.layers.Flatten(input_shape=config.input_shape),
     tf.keras.layers.Dense(config.layer_1, activation=config.activation_1),
     tf.keras.layers.Dropout(config.dropout),
     tf.keras.layers.Dense(config.layer_2, activation=config.activation_2)
 ])
 
 # Create optimizer
+optimizer = tf.keras.optimizers.SGD(
+    learning_rate=config.learning_rate, momentum=config.momentum)
 
 # Model compile
-model.compile(optimizer=config.optimizer,
+model.compile(optimizer=optimizer,
               loss=config.loss, metrics=[config.metric])
 
 # Model training
