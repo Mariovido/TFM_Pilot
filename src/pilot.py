@@ -5,6 +5,7 @@ from neptune.integrations.tensorflow_keras import NeptuneCallback
 
 import os
 from dotenv import load_dotenv
+from config import Config
 
 # Initialization
 load_dotenv()
@@ -17,15 +18,11 @@ run = neptune.init_run(
     api_token=API_TOKEN_NEPTUNE_PILOT
 )
 
-# Parameters
-learning_rate = 0.005
-momentum = 0.4
-epochs = 10
-batch_size = 64
-
 # Add parameters to the run
-params = {"lr": learning_rate, "momentum": momentum,
-          "epochs": epochs, "batch_size": batch_size}
+params = {"lr": Config.learning_rate, "momentum": Config.momentum, "epochs": Config.epochs,
+          "batch_size": Config.batch_size, "layer_1": Config.layer_1, "activation_1": Config.activation_1,
+          "dropout": Config.dropout, "layer_2": Config.layer_2, "activation_2": Config.activation_2,
+          "loss_function": Config.loss_function, "metric": Config.metric, "input_shape": Config.input_shape}
 run["parameters"] = params
 
 # Dataset initialization
@@ -34,17 +31,18 @@ x_train, x_test = x_train / 255.0, x_test / 255.0
 
 # Model creation
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(256, activation=tf.keras.activations.relu),
-    tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(10, activation=tf.keras.activations.softmax)
+    tf.keras.layers.Flatten(input_shape=params['input_shape']),
+    tf.keras.layers.Dense(
+        params['layer_1'], activation=params['activation_1']),
+    tf.keras.layers.Dropout(params['dropout']),
+    tf.keras.layers.Dense(params['layer_2'], activation=params['activation_2'])
 ])
 
 optimizer = tf.keras.optimizers.SGD(
     learning_rate=params['lr'], momentum=params["momentum"])
 
 model.compile(optimizer=optimizer,
-              loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+              loss=params['loss_function'], metrics=params['metric'])
 
 # Neptune callback initialization
 neptune_cbk = NeptuneCallback(run=run, base_namespace='training')

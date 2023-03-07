@@ -35,7 +35,7 @@ Markdown==3.4.1
 MarkupSafe==2.1.2
 monotonic==1.6
 msgpack==1.0.4
-neptune==1.0.1
+neptune==1.0.2
 neptune-tensorflow-keras==2.0.0
 numpy==1.24.2
 oauthlib==3.2.2
