@@ -128,9 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# TensorFlow logs
-logs
-
 # Generated files
 *.h5
 

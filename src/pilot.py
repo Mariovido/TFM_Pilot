@@ -1,28 +1,29 @@
+import tensorflow as tf
+import numpy as np
+
 import wandb
 from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
 
-import random
-import numpy as np
-import tensorflow as tf
-
 import os
 from dotenv import load_dotenv
+from config import Config
+
 
 # Initialization
 load_dotenv()
 PROJECT_WANDB_PILOT = os.getenv('PROJECT_WANDB_PILOT')
 
 wandb.init(project=PROJECT_WANDB_PILOT, config={
-    'layer_1': 512,
-    'activation_1': 'relu',
-    'dropout': random.uniform(0.01, 0.80),
-    'layer_2': 10,
-    'activation_2': 'softmax',
-    'optimizer': 'sgd',
-    'loss': 'sparse_categorical_crossentropy',
-    'metric': 'accuracy',
-    "epoch": 8,
-    'batch_size': 256
+    'layer_1': Config.layer_1,
+    'activation_1': Config.activation_1,
+    'dropout': Config.dropout,
+    'layer_2': Config.layer_2,
+    'activation_2': Config.activation_2,
+    'optimizer': Config.optimizer,
+    'loss': Config.loss_function,
+    'metric': Config.metric,
+    "epoch": Config.epochs,
+    'batch_size': Config.batch_size
 })
 
 # Use wandb.config as config
@@ -38,11 +39,13 @@ labels = [str(digit) for digit in range(np.max(y_train) + 1)]
 
 # Model creation
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)),
+    tf.keras.layers.Flatten(input_shape=(28, 28)), # Modify
     tf.keras.layers.Dense(config.layer_1, activation=config.activation_1),
     tf.keras.layers.Dropout(config.dropout),
     tf.keras.layers.Dense(config.layer_2, activation=config.activation_2)
 ])
+
+# Create optimizer
 
 # Model compile
 model.compile(optimizer=config.optimizer,
