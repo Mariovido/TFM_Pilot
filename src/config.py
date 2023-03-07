@@ -8,7 +8,6 @@ class Config:
     momentum = 0.4
     test_size = 0.2
     batch_size = 64
-    iterations = 5
 
     # DL algorithm
     optimizer = 'sgd'
