@@ -15,11 +15,11 @@ PROJECT_WANDB_PILOT = os.getenv('PROJECT_WANDB_PILOT')
 
 wandb.init(project=PROJECT_WANDB_PILOT, config={
     'layer_1': Config.layer_1,
-    'activation_1': Config.activation_1.__name__,
+    'activation_1': Config.activation_1,
     'dropout': Config.dropout,
     'layer_2': Config.layer_2,
-    'activation_2': Config.activation_2.__name__,
-    'loss': Config.loss_function.__name__,
+    'activation_2': Config.activation_2,
+    'loss': Config.loss_function,
     'metric': Config.metric,
     "epoch": Config.epochs,
     'batch_size': Config.batch_size,
@@ -41,23 +41,23 @@ labels = [str(digit) for digit in range(np.max(y_train) + 1)]
 
 # Model creation
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(input_shape=config.input_shape),
-    tf.keras.layers.Dense(config.layer_1, activation=config.activation_1),
-    tf.keras.layers.Dropout(config.dropout),
-    tf.keras.layers.Dense(config.layer_2, activation=config.activation_2)
+    tf.keras.layers.Flatten(input_shape=Config.input_shape),
+    tf.keras.layers.Dense(Config.layer_1, activation=Config.activation_1),
+    tf.keras.layers.Dropout(Config.dropout),
+    tf.keras.layers.Dense(Config.layer_2, activation=Config.activation_2)
 ])
 
 # Create optimizer
 optimizer = tf.keras.optimizers.SGD(
-    learning_rate=config.learning_rate, momentum=config.momentum)
+    learning_rate=Config.learning_rate, momentum=Config.momentum)
 
 # Model compile
 model.compile(optimizer=optimizer,
-              loss=config.loss, metrics=[config.metric])
+              loss=Config.loss_function, metrics=[Config.metric])
 
 # Model training
-model.fit(x=x_train, y=y_train, epochs=config.epoch,
-          batch_size=config.batch_size, validation_data=(x_test, y_test), callbacks=[WandbMetricsLogger(log_freq=5), WandbModelCheckpoint("models")])
+model.fit(x=x_train, y=y_train, epochs=Config.epochs,
+          batch_size=Config.batch_size, validation_data=(x_test, y_test), callbacks=[WandbMetricsLogger(log_freq=5), WandbModelCheckpoint("models")])
 
 # End
 wandb.finish()
