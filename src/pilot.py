@@ -22,7 +22,7 @@ run = neptune.init_run(
 params = {"lr": Config.learning_rate, "momentum": Config.momentum, "epochs": Config.epochs,
           "batch_size": Config.batch_size, "layer_1": Config.layer_1, "activation_1": Config.activation_1,
           "dropout": Config.dropout, "layer_2": Config.layer_2, "activation_2": Config.activation_2,
-          "loss_function": Config.loss_function, "metric": Config.metric, "input_shape": Config.input_shape}
+          "loss_function": Config.loss_function, "metric": Config.metric, "input_shape": str(Config.input_shape)}
 run["parameters"] = params
 
 # Dataset initialization
@@ -31,25 +31,24 @@ x_train, x_test = x_train / 255.0, x_test / 255.0
 
 # Model creation
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(input_shape=params['input_shape']),
-    tf.keras.layers.Dense(
-        params['layer_1'], activation=params['activation_1']),
-    tf.keras.layers.Dropout(params['dropout']),
-    tf.keras.layers.Dense(params['layer_2'], activation=params['activation_2'])
+    tf.keras.layers.Flatten(input_shape=Config.input_shape),
+    tf.keras.layers.Dense(Config.layer_1, activation=Config.activation_1),
+    tf.keras.layers.Dropout(Config.dropout),
+    tf.keras.layers.Dense(Config.layer_2, activation=Config.activation_2)
 ])
 
 optimizer = tf.keras.optimizers.SGD(
-    learning_rate=params['lr'], momentum=params["momentum"])
+    learning_rate=Config.learning_rate, momentum=Config.momentum)
 
-model.compile(optimizer=optimizer,
-              loss=params['loss_function'], metrics=params['metric'])
+model.compile(optimizer=optimizer, loss=Config.loss_function,
+              metrics=Config.metric)
 
 # Neptune callback initialization
 neptune_cbk = NeptuneCallback(run=run, base_namespace='training')
 
 # Model training
-model.fit(x_train, y_train, epochs=params['epochs'],
-          batch_size=params['batch_size'], callbacks=neptune_cbk)
+model.fit(x_train, y_train, epochs=Config.epochs,
+          batch_size=Config.batch_size, callbacks=neptune_cbk)
 
 # Model evaluation
 eval_metrics = model.evaluate(x_test, y_test, verbose=0)
