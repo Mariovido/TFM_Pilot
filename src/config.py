@@ -11,13 +11,13 @@ class Config:
 
     # DL algorithm
     optimizer = 'sgd'
-    loss_function = tf.keras.losses.sparse_categorical_crossentropy
+    loss_function = tf.keras.losses.sparse_categorical_crossentropy.__name__
     metric = 'accuracy'
 
     # Model hyperparameters
     input_shape = (28, 28)
     layer_1 = 256
-    activation_1 = tf.keras.activations.relu
+    activation_1 = tf.keras.activations.relu.__name__
     dropout = 0.5
     layer_2 = 10
-    activation_2 = tf.keras.activations.softmax
+    activation_2 = tf.keras.activations.softmax.__name__
