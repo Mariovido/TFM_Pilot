@@ -135,3 +135,4 @@ dmypy.json
 .neptune/
 wandb/
 models/
+logs/
