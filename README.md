@@ -36,6 +36,7 @@ This repository will be the repository containing code of the pilot for the Thes
 The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
+- [TensorFlow](https://www.tensorflow.org/)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
