@@ -37,6 +37,7 @@ The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
 - [TensorFlow](https://www.tensorflow.org/)
+- [TensorBoard](https://www.tensorflow.org/tensorboard?hl=es-419)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
@@ -89,12 +90,20 @@ _To start using the app you need to run the following steps:_
    ```sh
    env\Scripts\python.exe src\pilot.py
    ```
-3. (Optional) if you want to deactivate your environment run the following one
+3. Run the following command to view the model training logs
+   ```sh
+   tensorboard --logdir logs/fit
+   ```   
+4. Run the following command to view the model hyperameters logs
+   ```sh
+   tensorboard --logdir logs/hparam_tuning
+   ```
+4. (Optional) if you want to deactivate your environment run the following one
    ```sh
    deactivate
    ```
 
-A file called `mnist.h5` will be created on the root folder.
+A folder called `logs` will be created on the root folder. This folder contains all the logs from the runs executions.
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
