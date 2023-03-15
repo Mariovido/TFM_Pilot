@@ -37,6 +37,7 @@ The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
 - [TensorFlow](https://www.tensorflow.org/)
+- [Comet](https://www.comet.com/)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
@@ -94,7 +95,7 @@ _To start using the app you need to run the following steps:_
    deactivate
    ```
 
-A file called `mnist.h5` will be created on the root folder.
+The execution is saved on the comet web page and ca be accessed with this [link](https://www.comet.com/mariotfm2023#projects)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
