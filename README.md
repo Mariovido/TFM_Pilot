@@ -87,7 +87,7 @@ _To start using the app you need to run the following steps:_
 
 1. Open a terminal on the root folder
 2. Login into the Weights & Biases introducing the `API_KEY_WANDB_PILOT`
-   ```
+   ```sh
    wandb login
    ```
 3. Run the following command
