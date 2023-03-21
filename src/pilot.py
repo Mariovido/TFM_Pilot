@@ -28,7 +28,6 @@ optimizer = tf.keras.optimizers.SGD(
 model.compile(loss=Config.loss_function,
               optimizer=optimizer, metrics=[Config.metric])
 
-
 # Model training
 model.fit(x=x_train, y=y_train, epochs=Config.epochs,
           batch_size=Config.batch_size, validation_data=(x_test, y_test))
