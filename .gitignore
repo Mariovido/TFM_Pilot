@@ -136,3 +136,4 @@ dmypy.json
 wandb/
 models/
 logs/
+.guild/
