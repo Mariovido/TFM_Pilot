@@ -37,6 +37,7 @@ The frameworks/libraries used to complete this project are:
 
 - [Keras](https://keras.io/)
 - [TensorFlow](https://www.tensorflow.org/)
+- [Guild.ai](https://guild.ai/)
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 
@@ -89,12 +90,28 @@ _To start using the app you need to run the following steps:_
    ```sh
    env\Scripts\python.exe src\pilot.py
    ```
-3. (Optional) if you want to deactivate your environment run the following one
+3. Initializate guild
+   ```sh
+   guild init
+   ```
+4. Run the following command to see the operations
+   ```sh
+   guild operations
+   ```
+5. Run the operations
+   ```sh
+   guild run
+   ```
+6. To view the runs use the following command
+   ```sh
+   guild view
+   ```
+7. (Optional) if you want to deactivate your environment run the following one
    ```sh
    deactivate
    ```
 
-A file called `mnist.h5` will be created on the root folder.
+A folter called `runs` will be created on the `.guild` folder. This folder contains all the runs executions.
 
 <p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
 

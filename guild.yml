@@ -1,0 +1,17 @@
+train:
+  description: Train a simple neural network to classify MNIST digits
+  main: src/pilot
+  flags-import: all
+  flags:
+    epochs: 2
+    learning_rate: 0.005
+    momentum: 0.4
+    batch_size: 64
+    loss_function: 'sparse_categorical_crossentropy'
+    metric: 'accuracy'
+    input_shape: (28, 28)
+    layer_1: 256
+    activation_1: 'relu'
+    dropout: 0.5
+    layer_2: 10
+    activation_2: 'softmax'
