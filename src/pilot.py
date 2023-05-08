@@ -11,9 +11,9 @@ from config import Config
 
 # Initialization
 load_dotenv()
-PROJECT_WANDB_PILOT = os.getenv('PROJECT_WANDB_PILOT')
+PROJECT_WANDB = os.getenv('PROJECT_WANDB')
 
-wandb.init(project=PROJECT_WANDB_PILOT, config={
+wandb.init(project=PROJECT_WANDB, config={
     'layer_1': Config.layer_1,
     'activation_1': Config.activation_1,
     'dropout': Config.dropout,
