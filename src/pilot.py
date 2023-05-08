@@ -10,12 +10,12 @@ from config import Config
 # Initialization
 load_dotenv()
 
-PROJECT_NEPTUNE_PILOT = os.getenv('PROJECT_NEPTUNE_PILOT')
-API_TOKEN_NEPTUNE_PILOT = os.getenv('API_TOKEN_NEPTUNE_PILOT')
+PROJECT_NEPTUNE = os.getenv('PROJECT_NEPTUNE')
+API_TOKEN_NEPTUNE = os.getenv('API_TOKEN_NEPTUNE')
 
 run = neptune.init_run(
-    project=PROJECT_NEPTUNE_PILOT,
-    api_token=API_TOKEN_NEPTUNE_PILOT
+    project=PROJECT_NEPTUNE,
+    api_token=API_TOKEN_NEPTUNE
 )
 
 # Add parameters to the run
