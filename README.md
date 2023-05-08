@@ -1,4 +1,4 @@
-# PILOT REPOSITORY
+# DNN REPOSITORY
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -27,7 +27,7 @@
 
 ## About The Project
 
-This repository will be the repository containing code of the pilot for the Thesis master related to Tools for Deep Learning Experimentation.
+This repository will be the repository containing code of the DNN for the Thesis master related to Tools for Deep Learning Experimentation.
 
 <!-- The main functionality of this app is to make easier deleting mails from your inbox. Currently, only works for `Gmail` mails but in the future we plan to make it for other types of mails. -->
 
@@ -38,7 +38,7 @@ The frameworks/libraries used to complete this project are:
 - [Keras](https://keras.io/)
 - [TensorFlow](https://www.tensorflow.org/)
 
-<p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
+<p align="right">(<a href="#dnn-repository">Back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
@@ -76,7 +76,7 @@ _The steps to get working the project are the following ones:_
    pip install -r requirements.txt
    ```
 
-<p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
+<p align="right">(<a href="#dnn-repository">Back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
@@ -96,7 +96,7 @@ _To start using the app you need to run the following steps:_
 
 A file called `mnist.h5` will be created on the root folder.
 
-<p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
+<p align="right">(<a href="#dnn-repository">Back to top</a>)</p>
 
 <!-- LICENSE -->
 
@@ -104,7 +104,7 @@ A file called `mnist.h5` will be created on the root folder.
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
+<p align="right">(<a href="#dnn-repository">Back to top</a>)</p>
 
 <!-- CONTACT -->
 
@@ -114,4 +114,4 @@ Your Name - [@mariovido](https://github.com/Mariovido) - mario.vidaldom@gmail.co
 
 Project Link: [https://github.com/Mariovido/TFM_Pilot](https://github.com/Mariovido/TFM_Pilot)
 
-<p align="right">(<a href="#pilot-repository">Back to top</a>)</p>
+<p align="right">(<a href="#dnn-repository">Back to top</a>)</p>
