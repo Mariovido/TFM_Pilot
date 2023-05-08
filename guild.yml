@@ -3,7 +3,7 @@ train:
   main: src/pilot
   flags-import: all
   flags:
-    epochs: 2
+    epochs: 10
     learning_rate: 0.005
     momentum: 0.4
     batch_size: 64
