@@ -10,14 +10,14 @@ from config import Config
 # Initialization
 load_dotenv()
 
-PROJECT_COMET_PILOT = os.getenv('PROJECT_COMET_PILOT')
-API_KEY_COMET_PILOT = os.getenv('API_KEY_COMET_PILOT')
-WORKSPACE_COMET_PILOT = os.getenv('API_KEY_COWORKSPACE_COMET_PILOTMET_PILOT')
+PROJECT_COMET = os.getenv('PROJECT_COMET')
+API_KEY_COMET = os.getenv('API_KEY_COMET')
+WORKSPACE_COMET = os.getenv('WORKSPACE_COMET')
 
 experiment = Experiment(
-    api_key=API_KEY_COMET_PILOT,
-    project_name=PROJECT_COMET_PILOT,
-    workspace=WORKSPACE_COMET_PILOT,
+    api_key=API_KEY_COMET,
+    project_name=PROJECT_COMET,
+    workspace=WORKSPACE_COMET,
     auto_histogram_weight_logging=True,
     auto_histogram_gradient_logging=True,
     auto_histogram_activation_logging=True,
